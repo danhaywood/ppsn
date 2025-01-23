@@ -1,5 +1,7 @@
 package com.danhaywood.ppsn;
 
+import java.util.stream.IntStream;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,28 +24,19 @@ public class PpsnCalculator {
             throw new IllegalArgumentException("PPSN must be between 8 and 9 characters long");
         }
 
-        int checksum = 0;
-        for (int i = 0; i < 9; i++) {
-            checksum += checksumForCharacter(ppsn, i);
-        }
+        int checksum = IntStream.range(0, 9)
+            .map(i -> checksumForChar(ppsn, i))
+            .sum();
 
-        int remainder = checksum % 23;
-        return MAPPING.charAt(remainder);
+        return MAPPING.charAt(checksum % 23);
     }
 
-    private static int checksumForCharacter(String ppsn, int i) {
-        switch (i) {
-            case 7:
-                // skip the checksum character
-                return 0;
-            case 8:
-                if(ppsn.length() != 9 || ppsn.charAt(i) == 'W') {
-                    return 0;
-                }
-                int val = MAPPING.indexOf(ppsn.charAt(8));
-                return val * WEIGHTS[i];
-            default:
-                return Character.getNumericValue(ppsn.charAt(i)) * WEIGHTS[i];
-        }
+    private static int checksumForChar(String ppsn, int i) {
+        return (i == 8
+                    ? ppsn.length() == 9 && ppsn.charAt(i) != 'W'
+                        ? MAPPING.indexOf(ppsn.charAt(i))
+                        : 0
+                    : Character.getNumericValue(ppsn.charAt(i))
+                ) * WEIGHTS[i];
     }
 }
