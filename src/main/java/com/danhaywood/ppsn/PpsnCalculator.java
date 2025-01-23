@@ -5,10 +5,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class PpsnCalculator {
 
-    final static int[] REGULAR_CHARACTER_WEIGHTS = {8, 7, 6, 5, 4, 3, 2};
-    public static final int NINTH_CHARACTER_WEIGHT = 9;
-    static final String NINTH_DIGIT_DECODE        = "WABCDEFGHIJKLMNOPQRSTUV";
-    static final String CHECKSUM_REMAINDER_ENCODE = "WABCDEFGHIJKLMNOPQRSTUV";
+    static final int[] WEIGHTS = {8, 7, 6, 5, 4, 3, 2, 0, 9};
+    static final String MAPPING = "WABCDEFGHIJKLMNOPQRSTUV";
 
     public boolean isValid(String ppsn) {
         try {
@@ -25,23 +23,27 @@ public class PpsnCalculator {
         }
 
         int checksum = 0;
-        for (int i = 0; i < 7; i++) {
-            checksum += Character.getNumericValue(ppsn.charAt(i)) * REGULAR_CHARACTER_WEIGHTS[i];
+        for (int i = 0; i < 9; i++) {
+            checksum += checksumForCharacter(ppsn, i);
         }
-        checksum = adjustIfPost2013(ppsn, checksum);
 
         int remainder = checksum % 23;
-        return CHECKSUM_REMAINDER_ENCODE.charAt(remainder);
+        return MAPPING.charAt(remainder);
     }
 
-    private static int adjustIfPost2013(String ppsn, int checksum) {
-        if (ppsn.length() == 9) {
-            int i = NINTH_DIGIT_DECODE.indexOf(ppsn.charAt(8));
-            if (i == -1) {
-                throw new IllegalArgumentException("Invalid PPSN");
-            }
-            checksum += i * NINTH_CHARACTER_WEIGHT;
+    private static int checksumForCharacter(String ppsn, int i) {
+        switch (i) {
+            case 7:
+                // skip the checksum character
+                return 0;
+            case 8:
+                if(ppsn.length() != 9 || ppsn.charAt(i) == 'W') {
+                    return 0;
+                }
+                int val = MAPPING.indexOf(ppsn.charAt(8));
+                return val * WEIGHTS[i];
+            default:
+                return Character.getNumericValue(ppsn.charAt(i)) * WEIGHTS[i];
         }
-        return checksum;
     }
 }
