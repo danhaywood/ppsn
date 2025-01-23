@@ -25,25 +25,25 @@ class PpsnCalculator_Tests {
 
     public enum Scenario {
 
-        REGULAR_0		 		("1234567T", 'T', true),
-        REGULAR_0_INVALID		("1234567P", 'T', false),
-        REGULAR_1		 		("2680737S", 'S', true),
-        REGULAR_2		 		("7227485F", 'F', true),
-        REGULAR_3		 		("1819002D", 'D', true),
-        REGULAR_4		 		("7604924G", 'G', true),
+        REGULAR_0               ("1234567T", 'T', true),
+        REGULAR_0_INVALID       ("1234567P", 'T', false),
+        REGULAR_1               ("2680737S", 'S', true),
+        REGULAR_2               ("7227485F", 'F', true),
+        REGULAR_3               ("1819002D", 'D', true),
+        REGULAR_4               ("7604924G", 'G', true),
 
-        PRE_1999_WIFE_1			("6120218BW", 'B', true),
-        PRE_1999_WIFE_1_INVALID	("6120218VW", 'B', false),
-        PRE_1999_WIFE_2			("0465818BW", 'B', true),
-        PRE_1999_WIFE_3			("0111218VW", 'V', true),
-        PRE_1999_WIFE_4			("0566197HW", 'H', true),
+        PRE_1999_WIFE_1         ("6120218BW", 'B', true),
+        PRE_1999_WIFE_1_INVALID ("6120218VW", 'B', false),
+        PRE_1999_WIFE_2         ("0465818BW", 'B', true),
+        PRE_1999_WIFE_3         ("0111218VW", 'V', true),
+        PRE_1999_WIFE_4         ("0566197HW", 'H', true),
 
-        POST_2013_0				("1234567FA", 'F', true),
-        POST_2013_0_INVALID		("1234567XA", 'F', false),
-        POST_2013_1				("9493822MA", 'M', true),
-        POST_2013_2				("1138716JA", 'J', true),
-        POST_2013_3				("0018583VB", 'V', true),
-        POST_2013_4				("0153613KB", 'K', true),
+        POST_2013_0	            ("1234567FA", 'F', true),
+        POST_2013_0_INVALID     ("1234567XA", 'F', false),
+        POST_2013_1             ("9493822MA", 'M', true),
+        POST_2013_2             ("1138716JA", 'J', true),
+        POST_2013_3             ("0018583VB", 'V', true),
+        POST_2013_4             ("0153613KB", 'K', true),
         ;
 
         private final String ppsn;
